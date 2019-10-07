@@ -88,5 +88,5 @@ python3 accPlot.py data/sample-timeSeries.csv.gz data/sample-plot.png
 
 If you see the file data/sample-plot.png under biobankAccelerometerAnalysis project folder which is similar to the one below it means that everything is working as expected.
 
-![Time series plot](docs/source/samplePlot.png)
+![Time series plot](workdir/biobankAccelerometerAnalysis/docs/source/samplePlot.png)
 
