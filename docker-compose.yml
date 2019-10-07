@@ -5,7 +5,7 @@ version: '3.5'
 
 services:
   radarad-axivity:
-    image: radarad-axivity:0.0.2
+    image: halilagin/radarad-device-axivity:0.0.2
     user: ruser
     environment:
       TEST: TEST
