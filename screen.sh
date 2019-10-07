@@ -1,0 +1,2 @@
+script /dev/null
+screen

@@ -1,0 +1,59 @@
+# axivity linux test environment. the test code throws error therefore moving to anaconda version, which is also suggested by the https://github.com/activityMonitoring/biobankAccelerometerAnalysis.
+FROM ubuntu:xenial
+  
+ARG USERNAME=ruser
+ARG USERHOME=/home/ruser
+ARG USERID=1000
+ARG USERGECOS=ruser
+
+
+
+
+RUN adduser \
+  --home "$USERHOME" \
+  --uid $USERID \
+  --gecos "$USERGECOS" \
+  --disabled-password \
+  "$USERNAME"
+
+
+ENV TZ 'Europe/London'
+RUN echo $TZ > /etc/timezone && \
+apt-get update && apt-get install -y tzdata && \
+rm /etc/localtime && \
+ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+dpkg-reconfigure -f noninteractive tzdata
+
+RUN apt-get install -y  software-properties-common python-software-properties
+
+RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt-get update
+RUN apt-get install -y python3.7
+
+RUN apt-get install -y supervisor screen vim python3-pip
+
+ADD bootstrap.sh /etc/bootstrap.sh
+RUN chown root:root /etc/bootstrap.sh && \
+    chmod 700 /etc/bootstrap.sh
+
+ENV BOOTSTRAP /etc/bootstrap.sh
+COPY bootstrap.supervisor.conf /etc/supervisor/conf.d/supervisord.conf
+COPY supervisord.conf /etc/supervisor/supervisord.conf
+
+USER ruser
+#RUN pip3 install argparse joblib matplotlib numpy pandas sklearn sphinx sphinx-rtd-theme statsmodels
+RUN python3.7 -m pip install argparse 
+RUN python3.7 -m pip install joblib 
+RUN python3.7 -m pip install matplotlib 
+RUN python3.7 -m pip install numpy 
+RUN python3.7 -m pip install pandas 
+RUN python3.7 -m pip install sklearn 
+RUN python3.7 -m pip install sphinx 
+RUN python3.7 -m pip install sphinx-rtd-theme 
+RUN python3.7 -m pip install statsmodels
+
+
+
+USER root
+CMD  ["/usr/bin/supervisord"]
+

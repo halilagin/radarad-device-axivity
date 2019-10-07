@@ -1,0 +1,49 @@
+# vim :set ts=2 sw=2 sts=2 et
+#see: https://docs.docker.com/compose/compose-file/#compose-file-structure-and-examples
+#see: https://docs.docker.com/compose/compose-file/compose-file-v2/#ipv4_address-ipv6_address
+version: '3.5'
+
+services:
+  radarad-axivity:
+    image: radarad-axivity:0.0.2
+    user: ruser
+    environment:
+      TEST: TEST
+      #ZOOKEEPERIP: 172.19.0.250
+      #ZOOKEEPER_PORT_2181_TCP_ADDR: 172.19.0.250
+      #ZOOKEEPER_PORT_2181_TCP_PORT: 2181
+      #KAFKA_LOG_DIR: /home/jovyan/host-home/kafka-log
+      HOME: /home/ruser
+      PATH: /opt/conda/bin:/home/ruser/container-programs/jdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    hostname: radarad-axivity
+    container_name: radarad-axivity
+    #networks:
+    #  default:
+    #    ipv4_address: 172.19.0.249
+    ports:
+      - "18080:18080"
+    #volumes:
+    #  - data:/opt/solr/server/solr/mycores
+    volumes:
+      - ./workdir:/home/ruser/workdir
+      - ./container-programs:/home/ruser/container-programs
+      - ./supervisord/execs:/etc/supervisord.execs
+      - ./supervisord/conf:/etc/supervisor/conf.d
+    #entrypoint:
+    #  - docker-entrypoint.sh
+    #  - solr-precreate
+    #  - mycore
+    command: "/usr/bin/supervisord"
+
+#volumes:
+#  data:
+
+
+#networks:
+#  acmnet:
+#    name: acmnet
+
+networks:
+  default:
+    external:
+      name: radaradnet
