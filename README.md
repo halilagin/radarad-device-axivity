@@ -16,6 +16,7 @@ cd radarad-device-axivity
 ## Change directory in **workdir** directory
 ```bash
 cd workdir
+```
 
 ## Download the Biobank Accelerometer Analysis project.
 ```bash
